@@ -1,0 +1,1146 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Agustinos.tv API",
+        "version": "3.20.01"
+    },
+    "servers": [
+        {
+            "url": "http://api.agustinos.tv"
+        }
+    ],
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Registra un nuevo usuario",
+                "description": "Registra un nuevo usuario",
+                "operationId": "App\\Http\\Controllers\\AuthController::register",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "Email del usuario",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Contraseña del usuario",
+                                        "type": "string"
+                                    },
+                                    "username": {
+                                        "description": "Nombre de Usuario",
+                                        "type": "string"
+                                    },
+                                    "acepto_avisos_contenido": {
+                                        "description": "Acepta el envío de notificaciones y emails sobre cambios en el contenido de Agustinos.TV (notificaciones push por ej)",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Contraseña modificada con éxito"
+                    },
+                    "404": {
+                        "description": "El token no es válido o ha caducado"
+                    },
+                    "401": {
+                        "description": "Usuario no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/auth/ask-activate/{email}": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Reenviar Activación",
+                "description": "Reenviar Activación",
+                "operationId": "App\\Http\\Controllers\\AuthController::PedirActivacion",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "Email del usuario",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Notificación enviada"
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    },
+                    "409": {
+                        "description": "Cuenta ya activada"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Login",
+                "description": "Login",
+                "operationId": "App\\Http\\Controllers\\AuthController::login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "Email de Usuario a autenticar",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Contraseña del Usuario a autenticar",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuario autenticado correctamente"
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    },
+                    "401": {
+                        "description": "Usuario no activado | Datos incorrectos (Unauthorized)"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Logout",
+                "description": "Logout",
+                "operationId": "App\\Http\\Controllers\\AuthController::logout",
+                "responses": {
+                    "200": {
+                        "description": "Usuario desconectado correctamente"
+                    }
+                }
+            }
+        },
+        "/api/auth/user": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Obtener el usuario conectado",
+                "description": "Obtener el usuario conectado",
+                "operationId": "App\\Http\\Controllers\\AuthController::user",
+                "responses": {
+                    "200": {
+                        "description": "Objeto del usuario conectado"
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/auth/password-recovery/ask": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Pedir recuperación de contraseña",
+                "description": "Pedir recuperación de contraseña",
+                "operationId": "App\\Http\\Controllers\\AuthController::PeticionRecuperarContrasenya",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "Email del usuario",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Petición enviada"
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/auth/password-recovery/update": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Realizar cambio de contraseña",
+                "description": "Realizar cambio de contraseña",
+                "operationId": "App\\Http\\Controllers\\AuthController::ActualizarContrasenya",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "description": "Token de la Petición de cambio de contraseña",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Nueva contraseña",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Contraseña modificada con éxito"
+                    },
+                    "404": {
+                        "description": "El token no es válido o ha caducado"
+                    },
+                    "401": {
+                        "description": "Usuario no encontrado"
+                    },
+                    "409": {
+                        "description": "Faltan datos"
+                    }
+                }
+            }
+        },
+        "/api/auth/activate/{token}": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Activar una cuenta",
+                "description": "Activar una cuenta",
+                "operationId": "App\\Http\\Controllers\\AuthController::Activar",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "description": "Email de Usuario a autenticar",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    }
+                }
+            }
+        },
+        "/api/auth/refresh": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Refresca el token de sesión",
+                "description": "Refresca el token de sesión",
+                "operationId": "App\\Http\\Controllers\\AuthController::refresh",
+                "responses": {
+                    "200": {
+                        "description": "Token refrescado con éxito"
+                    },
+                    "401": {
+                        "description": "Token no válido o expirado"
+                    }
+                }
+            }
+        },
+        "/api/auth/isMobile": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Detecta si el dispositivo es un mobil o tablet",
+                "description": "Detecta si el dispositivo es un mobil o tablet. Es obligatorio llamar a este método con sesión de usuario abierta",
+                "operationId": "App\\Http\\Controllers\\AuthController::CalculateIsMobile",
+                "responses": {
+                    "200": {
+                        "description": "Booleano resultado del diagnóstico"
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Comprobar si la sesión iniciada está en un dispositivo móvil",
+                "description": "Comprobar si la sesión iniciada está en un dispositivo móvil",
+                "operationId": "App\\Http\\Controllers\\AuthController::isMobile",
+                "responses": {
+                    "200": {
+                        "description": "Usuario autenticado correctamente"
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/canales": {
+            "get": {
+                "tags": [
+                    "Canales"
+                ],
+                "summary": "Listar canales",
+                "description": "Obtener la lista de canales",
+                "operationId": "App\\Http\\Controllers\\CanalesController::index",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número de Página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista resultado de los canales"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Canales"
+                ],
+                "summary": "Guardar un canal",
+                "description": "Guardar un canal",
+                "operationId": "App\\Http\\Controllers\\CanalesController::store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "description": "Nombre de el canal",
+                                        "type": "string"
+                                    },
+                                    "estado": {
+                                        "description": "Estado del canal ['ONLINE','OFFLINE']",
+                                        "type": "string"
+                                    },
+                                    "ruta": {
+                                        "description": "Ruta de la emisión",
+                                        "type": "string"
+                                    },
+                                    "delegacion_id": {
+                                        "description": "Id de la delegación",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Canal no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Canales"
+                ],
+                "summary": "Eliminar un canal",
+                "description": "Eliminar un canal",
+                "operationId": "App\\Http\\Controllers\\CanalesController::destroy",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Canal no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/canales/{id}": {
+            "get": {
+                "tags": [
+                    "Canales"
+                ],
+                "summary": "Obtener un canal",
+                "description": "Obtener un canal",
+                "operationId": "App\\Http\\Controllers\\CanalesController::show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de canal",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Canal obtenido con éxito"
+                    },
+                    "404": {
+                        "description": "Canal no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Canales"
+                ],
+                "summary": "Actualizar un canal",
+                "description": "Actualizar un canal",
+                "operationId": "App\\Http\\Controllers\\CanalesController::update",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "description": "Nombre de el canal",
+                                        "type": "string"
+                                    },
+                                    "estado": {
+                                        "description": "Estado del canal ['ONLINE','OFFLINE']",
+                                        "type": "string"
+                                    },
+                                    "ruta": {
+                                        "description": "Ruta de la emisión",
+                                        "type": "string"
+                                    },
+                                    "delegacion_id": {
+                                        "description": "Id de la delegación",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/eventos": {
+            "get": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Listar eventos",
+                "description": "Obtener la lista de eventos",
+                "operationId": "App\\Http\\Controllers\\EventosController::index",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número de Página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "canal_id",
+                        "in": "query",
+                        "description": "Id de el canal",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista resultado de los eventos"
+                    }
+                }
+            }
+        },
+        "/api/eventos/evento_activo_en_canal/{id}": {
+            "post": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Obtener evento activo dado un canal",
+                "description": "Obtener evento activo dado un canal",
+                "operationId": "App\\Http\\Controllers\\EventosController::eventoActivoEnCanal",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de canal",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Canal obtenido con éxito"
+                    },
+                    "404": {
+                        "description": "Evento no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/eventos/{id}": {
+            "put": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Actualizar un evento",
+                "description": "Actualizar un evento",
+                "operationId": "App\\Http\\Controllers\\EventosController::update",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "Título del evento",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Descripción del evento",
+                                        "type": "string"
+                                    },
+                                    "inicio": {
+                                        "description": "Fecha/Hora de Inicio",
+                                        "type": "DATETIME"
+                                    },
+                                    "final": {
+                                        "description": "Fecha/Hora de el Final",
+                                        "type": "DATETIME"
+                                    },
+                                    "delegacion_id": {
+                                        "description": "Id de la Delegación",
+                                        "type": "integer"
+                                    },
+                                    "views": {
+                                        "description": "Views",
+                                        "type": "integer"
+                                    },
+                                    "likes": {
+                                        "description": "Likes",
+                                        "type": "integer"
+                                    },
+                                    "max_online": {
+                                        "description": "Max Online",
+                                        "type": "integer"
+                                    },
+                                    "canal_id": {
+                                        "description": "Id de Canal",
+                                        "type": "integer"
+                                    },
+                                    "estado": {
+                                        "description": "estado de el evento ['EN_ESPERA','EMITIENDO','FINALIZADO']",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Evento no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/eventos/ver/{id}": {
+            "post": {
+                "tags": [
+                    "Eventos"
+                ],
+                "summary": "Ver un evento como usuario",
+                "description": "Ver un evento como usuario",
+                "operationId": "App\\Http\\Controllers\\EventosController::VerEvento",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Evento no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/likes/evento/{id_evento}": {
+            "get": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Obtener los likes de un evento",
+                "description": "Obtener los likes de un evento",
+                "operationId": "App\\Http\\Controllers\\LikesController::getLikesFromEvento",
+                "parameters": [
+                    {
+                        "name": "id_evento",
+                        "in": "path",
+                        "description": "Id de evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Evento no encontrado"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Añadir like a un evento",
+                "description": "Añadir like un evento",
+                "operationId": "App\\Http\\Controllers\\LikesController::AddLikeToEvento",
+                "parameters": [
+                    {
+                        "name": "id_evento",
+                        "in": "path",
+                        "description": "Id de evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Evento no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Quitar like a un evento",
+                "description": "Quitar los likes de un evento",
+                "operationId": "App\\Http\\Controllers\\LikesController::QuitLikeToEvento",
+                "parameters": [
+                    {
+                        "name": "id_evento",
+                        "in": "path",
+                        "description": "Id de evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Evento no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/likes/video/{id_video}": {
+            "get": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Obtener los likes de un vídeo",
+                "description": "Obtener los likes de un vídeo",
+                "operationId": "App\\Http\\Controllers\\LikesController::getLikesFromVideo",
+                "parameters": [
+                    {
+                        "name": "id_video",
+                        "in": "path",
+                        "description": "Id de vídeo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Vídeo no encontrado"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Añadir like a un vídeo",
+                "description": "Añadir like un vídeo",
+                "operationId": "App\\Http\\Controllers\\LikesController::AddLikeToVideo",
+                "parameters": [
+                    {
+                        "name": "id_video",
+                        "in": "path",
+                        "description": "Id de vídeo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Vídeo no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Quitar like a vídeo",
+                "description": "Quitar like a vídoe",
+                "operationId": "App\\Http\\Controllers\\LikesController::QuitLikeToVideo",
+                "parameters": [
+                    {
+                        "name": "id_evento",
+                        "in": "path",
+                        "description": "Id de vídeo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Vídeo no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/check-like/evento/{id_evento}": {
+            "get": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Comprobar si el usuario en sesión ha dado like a este evento",
+                "description": "Comprobar si el usuario en sesión ha dado like a este evento",
+                "operationId": "App\\Http\\Controllers\\LikesController::CheckLikeEvento",
+                "parameters": [
+                    {
+                        "name": "id_evento",
+                        "in": "path",
+                        "description": "Id de evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Evento no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/check-like/video/{id_video}": {
+            "get": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Comprobar si el usuario en sesión ha dado like a este vídeo",
+                "description": "Comprobar si el usuario en sesión ha dado like a este vídeo",
+                "operationId": "App\\Http\\Controllers\\LikesController::CheckLikeVideo",
+                "parameters": [
+                    {
+                        "name": "id_video",
+                        "in": "path",
+                        "description": "Id de vídeo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Vídeo no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/users/": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Listar usuarios",
+                "description": "Obtener un usuario",
+                "operationId": "App\\Http\\Controllers\\UserController::index",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número de Página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista resultado de los usuarios"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Guardar un usuario",
+                "description": "Guardar un usuario",
+                "operationId": "App\\Http\\Controllers\\UserController::store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "description": "Nombre de usuario",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Email de usuario",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Contraseña del usuario",
+                                        "type": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "409": {
+                        "description": "El email introducido ya existe en el sitema"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Eliminar un usuario",
+                "description": "Eliminar un usuario",
+                "operationId": "App\\Http\\Controllers\\UserController::destroy",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "403": {
+                        "description": "No está permitido eliminar el usuario que está actualmente logueado"
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Obtener un usuario",
+                "description": "Obtener un usuario",
+                "operationId": "App\\Http\\Controllers\\UserController::show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuario obtenido con éxito"
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Actualizar un usuario",
+                "description": "Actualizar un usuario",
+                "operationId": "App\\Http\\Controllers\\UserController::update",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Nombre de usuario",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Email de usuario",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Contraseña del usuario",
+                                        "type": "password"
+                                    },
+                                    "role": {
+                                        "description": "Rol del usuario ['USUARIO','ADMIN','ROOT']",
+                                        "type": "string"
+                                    },
+                                    "active": {
+                                        "description": "Cuenta activada : [0 / 1]",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "409": {
+                        "description": "El email introducido ya existe en el sitema"
+                    }
+                }
+            }
+        },
+        "/api/novedades": {
+            "get": {
+                "tags": [
+                    "Novedades"
+                ],
+                "summary": "Obtiene las novedades de la web personalizadas para el usuario",
+                "description": "Obtiene las novedades de la web personalizadas para el usuario",
+                "operationId": "App\\Http\\Controllers\\UserController::getNovedades",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número de Página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/api/ver-video/{id}": {
+            "get": {
+                "tags": [
+                    "Videos"
+                ],
+                "summary": "Obtener un vídeo para ser reproducido",
+                "description": "Obtener un vídeo para ser reproducido",
+                "operationId": "App\\Http\\Controllers\\VideoController::verVideo",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de el Vídeo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vídeo obtenido con éxito"
+                    },
+                    "404": {
+                        "description": "Vídeo no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/videos/{id}/addView": {
+            "post": {
+                "tags": [
+                    "Videos"
+                ],
+                "summary": "Añadir visualización a un vídeo",
+                "description": "Añadir visualización a un vídeo",
+                "operationId": "App\\Http\\Controllers\\VideoController::addview",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de el Vídeo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vídeo obtenido con éxito"
+                    },
+                    "404": {
+                        "description": "Vídeo no encontrado"
+                    }
+                }
+            }
+        }
+    }
+}
