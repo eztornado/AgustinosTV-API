@@ -2,10 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use App\BotScoutResult;
+use App\Services\TornadoCoreService;
 use Closure;
 use BotScout;
 use Telegram\Bot\Api;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 class BotScoutCheckIP
 {
@@ -15,15 +18,75 @@ class BotScoutCheckIP
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @return mixed
+     *
+     *
      */
+
+    public function __construct(TornadoCoreService $tornadoCoreService)
+    {
+        $this->tornadoCoreService = $tornadoCoreService;
+    }
+
+    private function llamarBotScout($ip_usuario)
+    {
+        $apiquery = "http://botscout.com/test/?ip=".$ip_usuario.'&key='.env('BOTSCOUT_API');
+        if(function_exists('file_get_contents')){
+            // Use file_get_contents
+            $returned_data = file_get_contents($apiquery);
+        }else{
+            $ch = curl_init($apiquery);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $returned_data = curl_exec($ch);
+            curl_close($ch);
+        }
+        $botdata = explode('|', $returned_data);
+
+        $res = 0;
+        if($botdata[0] == 'Y') $res = 1;
+
+        return $res;
+    }
+
     public function handle($request, Closure $next)
     {
-        
+
         $ip_usuario = $this->getIp();
 
 
-        $result = \App\BotScoutResult::where('ip',$ip_usuario)->first();
-        
+        $this->tornadoCoreService->login();
+        $result = $this->tornadoCoreService->checkBSResult($ip_usuario);
+        if($result['data'] == false)
+        {
+            // !!No está en TornadoCore
+            // Procesar BotScout aqui
+            $resultado = $this->llamarBotScout($ip_usuario);
+
+            //Almacenar Resultado en Local
+            BotScoutResult::create([
+                'ip' => $ip_usuario,
+                'result' => $resultado,
+            ]);
+
+            //Enviar Copia a TornadoCore
+            $llamada = $this->tornadoCoreService->addBSResult($ip_usuario,$resultado);
+
+            if($resultado == 1)
+            {
+                return response(json_encode('IP NO PERMITIDA. BOT DETECTADO'),200);
+            }
+
+
+        }
+        else
+        {
+            //Resultado positivo TornadoCore
+            return response(json_encode('IP NO PERMITIDA. BOT DETECTADO'),200);
+
+        }
+
+        /*$result = \App\BotScoutResult::where('ip',$ip_usuario)->first();
+
         if(!is_null($result))
         {
             if($result->result == 1)
@@ -49,59 +112,36 @@ class BotScoutCheckIP
                         $returned_data = curl_exec($ch);
                         curl_close($ch);
                     }
-                    $botdata = explode('|', $returned_data); 
-    
+                    $botdata = explode('|', $returned_data);
+
                     $res = 0;
                     if($botdata[0] == 'Y') $res = 1;
                     $bsr = \App\BotScoutResult::find($r->id);
                     $bsr->result = $res;
-                    $bsr->save();                    
+                    $bsr->save();
 
-                    
+
                 }
             }
-            
-            
+
+
         }
         else
         {
             try{
 
-                              
-                $apiquery = "http://botscout.com/test/?ip=".$ip_usuario.'&key='.env('BOTSCOUT_API');
-                if(function_exists('file_get_contents')){
-                    // Use file_get_contents
-                    $returned_data = file_get_contents($apiquery);
-                }else{
-                    $ch = curl_init($apiquery);
-                    curl_setopt($ch, CURLOPT_HEADER, 0);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                    $returned_data = curl_exec($ch);
-                    curl_close($ch);
-                }
-                $botdata = explode('|', $returned_data); 
 
-                $res = 0;
-                if($botdata[0] == 'Y') $res = 1;
-                $bsr = \App\BotScoutResult::create([
-                    'ip' => $ip_usuario,
-                    'result' => $res,
-                ]);
 
-                if( $botdata[0] == 'Y')
-                {
-                    return response(json_encode("IP NO PERMITIDA BOT DETECTADO"),200);
-                }
-                
+
 
                 } catch (Exception $ex) {
-    
-                }        
-        }   
-        
+
+                }
+        }*/
+
         return $next($request);
     }
-    
+
     private function getIp(){
         foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key){
             if (array_key_exists($key, $_SERVER) === true){
@@ -113,5 +153,5 @@ class BotScoutCheckIP
                 }
             }
         }
-    }     
+    }
 }
