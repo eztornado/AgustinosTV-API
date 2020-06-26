@@ -614,7 +614,7 @@ class AuthController extends Controller
 
         }
 
-        return json_encode(['message' => "ko", 'errors' => $errors]);
+        return redirect('https://agustinos.tv/#/auth/login?activado=1');
     }
 
 
