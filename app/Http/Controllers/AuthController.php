@@ -15,7 +15,7 @@ use Telegram\Bot\Api;
 use App\Services\MailChimpService;
 class AuthController extends Controller
 {
-    
+
     /**
      * @OA\Post(
      *      path="/api/auth/register",
@@ -34,7 +34,7 @@ class AuthController extends Controller
      *                   type="string"
      *               ),
      *               @OA\Property(
-     *                   property="password",                 
+     *                   property="password",
      *                   description="Contraseña del usuario",
      *                   type="string"
      *               ),
@@ -42,12 +42,12 @@ class AuthController extends Controller
      *                   property="username",
      *                   description="Nombre de Usuario",
      *                   type="string"
-     *               ), 
+     *               ),
      *               @OA\Property(
      *                   property="acepto_avisos_contenido",
      *                   description="Acepta el envío de notificaciones y emails sobre cambios en el contenido de Agustinos.TV (notificaciones push por ej)",
      *                   type="string"
-     *               ),              
+     *               ),
      *           )
      *       )
      *   ),
@@ -64,14 +64,14 @@ class AuthController extends Controller
      *          description="Usuario no encontrado"
      *       ),
      * )
-     * */    
-    
+     * */
+
     public function __construct(MailChimpService $mailChipService)
     {
         $this->mailChimpService = $mailChipService;
     }
-    
-    
+
+
     public function register(Request $request)
     {
         $v = Validator::make($request->all(), [
@@ -79,7 +79,7 @@ class AuthController extends Controller
             'username' => 'required|min:3',
             'password'  => 'required|min:3',
         ]);
-              
+
 
         if ($v->fails())
         {
@@ -88,15 +88,15 @@ class AuthController extends Controller
                 'errors' => $v->errors()
             ], 422);
         }
-        
+
          $emailChecker = new \Tintnaingwin\EmailCheckerPHP\EmailChecker();
          $existe =  $emailChecker->check($request->email);
-         
+
          if (strpos($request->email, 'gmail.com') === false || strpos($request->email, 'hotmail.es') === false || strpos($request->email, 'hotmail.com') === false )
          {
              $existe = true;
          }
-         
+
          if($existe == true)
          {
             $user = new User;
@@ -111,43 +111,43 @@ class AuthController extends Controller
             $telegram->sendMessage([
             'chat_id' => env('TELEGRAM_ADMIN_GROUP'),
             'text' => "[Nuevo Registro] : ".$request->email."\n"
-            ]); */   
+            ]); */
 
 
 
             $activation = md5("AGUSTINOS_".$request->email);
-            
 
-            $user->activation_code = $activation;    
+
+            $user->activation_code = $activation;
             $user->save();
             $user = User::find($user->id);
 
-            try {
+            /*try {
             $this->mailChimpService->AñadirMiembroLista('a5c228f4d0',$request->email,'subscribed');
             $segmento = $this->mailChimpService->CrearSegmento('a5c228f4d0',$request->email,array ($request->email));
-            
-            $user->mailchimp_segment = $segmento['id'];
-            $user->save();                        
-            
 
-            
-            
-            //$user->save();
-            //$user->notify(new \App\Notifications\RegistroNotification($user->id));     
-            
-            $campanya = $this->mailChimpService->CrearCampanyas('regular','Activar Cuenta',$user->mailchimp_segment);                  
-            $contenido = $this->mailChimpService->SubirContenidoCampanya($campanya,'nuevo_registro',array('activation' => $user->activation_code));                   
+            $user->mailchimp_segment = $segmento['id'];
+            $user->save(); */
+
+
+
+
+            $user->save();
+            //$user->notify(new \App\Notifications\RegistroNotification($user->id));
+
+            /*$campanya = $this->mailChimpService->CrearCampanyas('regular','Activar Cuenta',$user->mailchimp_segment);
+            $contenido = $this->mailChimpService->SubirContenidoCampanya($campanya,'nuevo_registro',array('activation' => $user->activation_code));
             $envio = $this->mailChimpService->EnviarCampanya($campanya);
-            //return $envio;                
-            //$user->notify(new \App\Notifications\RegistroNotification($user->id));   
+            //return $envio;
+            //$user->notify(new \App\Notifications\RegistroNotification($user->id));
             }
             catch(Exception $e)
             {
                 echo $e->getMessage();
-                $user->notify(new \App\Notifications\RegistroNotification($user->id));  
-            } 
-            
-            //$user->notify(new \App\Notifications\RegistroNotification($user->id));  
+                $user->notify(new \App\Notifications\RegistroNotification($user->id));
+            }*/
+
+            $user->notify(new \App\Notifications\RegistroNotification($user->id));
 
             return response()->json(['status' => 'success'], 200);
          }
@@ -156,8 +156,8 @@ class AuthController extends Controller
             return response()->json(['message' => 'No podemos verificar que tu correo exista', 'status' => $existe], 404);
          }
     }
-    
-    
+
+
     /**
      * @OA\Get(
      *      path="/api/auth/ask-activate/{email}",
@@ -174,7 +174,7 @@ class AuthController extends Controller
      *                   property="email",
      *                   description="Email del usuario",
      *                   type="string"
-     *               ),          
+     *               ),
      *           )
      *       )
      *   ),
@@ -191,11 +191,11 @@ class AuthController extends Controller
      *          description="Cuenta ya activada"
      *       ),
      * )
-     * */   
-    
+     * */
+
     public function PedirActivacion($email)
     {
-        
+
         $user = null;
         if($email != null)
         {
@@ -205,25 +205,25 @@ class AuthController extends Controller
         {
             if($user->active == 0)
             {
-                $campanya = $this->mailChimpService->CrearCampanyas('regular','Activar Cuenta',$user->mailchimp_segment);                  
-                $contenido = $this->mailChimpService->SubirContenidoCampanya($campanya,'nuevo_registro',array('activation' => $user->activation_code));                   
-                $envio = $this->mailChimpService->EnviarCampanya($campanya);
-                //return $envio;                
-                //$user->notify(new \App\Notifications\RegistroNotification($user->id)); 
+                /*$campanya = $this->mailChimpService->CrearCampanyas('regular','Activar Cuenta',$user->mailchimp_segment);
+                $contenido = $this->mailChimpService->SubirContenidoCampanya($campanya,'nuevo_registro',array('activation' => $user->activation_code));
+                $envio = $this->mailChimpService->EnviarCampanya($campanya);*/
+                //return $envio;
+                $user->notify(new \App\Notifications\RegistroNotification($user->id));
                 return response(json_encode('Notificación enviada'),200);
             }
             else
             {
                 return response(json_encode('Cuenta ya activada'),409);
             }
-            
+
         }
         else
         {
             return response(json_encode('Usuario no encontrado'),404);
         }
     }
-    
+
     /**
      * @OA\Post(
      *      path="/api/auth/login",
@@ -264,17 +264,17 @@ class AuthController extends Controller
      * )
      * */
 
-    
+
     public function login(Request $request)
     {
 
         $credentials = request(['email', 'password']);
 
-        if (!$token = auth('api')->attempt($credentials)) {     
+        if (!$token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        
+
         $cerrar_anteriores = \App\Sesiones::where('user_id',auth('api')->user()->id)->where('active',1)->get();
         foreach($cerrar_anteriores as $anteriores)
         {
@@ -283,7 +283,7 @@ class AuthController extends Controller
             $sesion_anterior->token = null;
             $sesion_anterior->save();
         }
-        
+
         $sesion = \App\Sesiones::create([
             'user_id' => auth('api')->user()->id,
             'token' => $token,
@@ -292,18 +292,18 @@ class AuthController extends Controller
             'ip' => $this->getIp(),
             'webBrowserData' => $request->header('User-Agent'),
         ]);
-        
+
         $sesion = Sesiones::find($sesion->id);
         $sesion->isMacOs = $this->IsMacOs(auth('api')->user()->id);
         $sesion->save();
-        
-        
+
+
 
 
         return $this->respondWithToken($token);
 
     }
-    
+
     private function IsMacOs($user_id)
     {
             $sesion = \App\Sesiones::where('user_id',$user_id)->where('active',1)->first();
@@ -311,25 +311,25 @@ class AuthController extends Controller
             if(!is_null($sesion))
             {
                 $webBrowserData = $sesion->webBrowserData;
-                $es_macos = strstr($webBrowserData,'Mac OS'); 
+                $es_macos = strstr($webBrowserData,'Mac OS');
                 $es_ios = strstr($webBrowserData,'iOS');
                 $es_macos = $es_macos && !$es_ios;
             }
-             
+
             return $es_macos;
-      
+
     }
 
     protected function respondWithToken($token)
     {
         $user = auth('api')->user();
-        
+
         if($user->active == 0)
         {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        
+
 
         return response()->json([
             'access_token' => $token,
@@ -338,7 +338,7 @@ class AuthController extends Controller
             'expires_in' => auth('api')->factory()->getTTL() * 60,
         ])->header('Authorization', $token);
     }
-    
+
     /**
      * @OA\Post(
      *      path="/api/auth/logout",
@@ -350,7 +350,7 @@ class AuthController extends Controller
      *          description="Usuario desconectado correctamente"
      *       ),
      * )
-     * */    
+     * */
 
     public function logout()
     {
@@ -364,7 +364,7 @@ class AuthController extends Controller
             $sesion->active = 0;
             $sesion->save();
         }
-        
+
         $this->guard()->logout();
         return response()->json([
             'status' => 'success',
@@ -372,7 +372,7 @@ class AuthController extends Controller
         ], 200);
 
     }
-    
+
     /**
      * @OA\Get(
      *      path="/api/auth/user",
@@ -386,7 +386,7 @@ class AuthController extends Controller
      *      @OA\Response(response=404, description="Usuario no encontrado"),
      * )
      * */
-    
+
     public function user(Request $request)
     {
 
@@ -396,13 +396,13 @@ class AuthController extends Controller
             $aux = explode(" ", $request->server->getHeaders()['AUTHORIZATION']);
             $token = $aux[1];
         }
-        
+
         $user = User::find(Auth::user()->id);
         $sesion_activa = \App\Sesiones::where('user_id',$user->id)->where('token',$token)->where('active',1)->first();
-        
+
         if(!is_null($user) && !is_null($sesion_activa))
         {
-          
+
 
             return response(json_encode($user),200);
         }
@@ -413,7 +413,7 @@ class AuthController extends Controller
 
 
     }
-    
+
 
     /**
      * @OA\Post(
@@ -444,15 +444,15 @@ class AuthController extends Controller
      *          description="Usuario no encontrado"
      *       ),
      * )
-     * */    
+     * */
 
     public function PeticionRecuperarContrasenya()
     {
         $email = Input::post('email');
-        
+
         if(strlen($email) > 0)
         {
-            
+
 
                 $activation = md5("AGUSTINOS_RECOVERY_".$email);
                 $usuario = \App\User::where('email',$email)->first();
@@ -462,25 +462,28 @@ class AuthController extends Controller
                     $usuario->activation_code = $activation;
                     $usuario->save();
 
-                    $campanya = $this->mailChimpService->CrearCampanyas('regular','Recuperar Contraseña',$usuario->mailchimp_segment);                  
-                    $contenido = $this->mailChimpService->SubirContenidoCampanya($campanya,'recuperar_contrasenya',array('activation' => $activation));                   
-                    $envio = $this->mailChimpService->EnviarCampanya($campanya);
+                    /*$campanya = $this->mailChimpService->CrearCampanyas('regular','Recuperar Contraseña',$usuario->mailchimp_segment);
+                    $contenido = $this->mailChimpService->SubirContenidoCampanya($campanya,'recuperar_contrasenya',array('activation' => $activation));
+                    $envio = $this->mailChimpService->EnviarCampanya($campanya);*/
+                    $usuario->notify(new \App\Notifications\RecuperarContrasenyaNotification($usuario->id));
+
+
                     return response(json_encode('Notificación enviada'),200);
-                }    
+                }
                 else
                 {
                      return response("Usuario no encontradoo",404);
-                }                   
- 
+                }
+
         }
         else {
             return response("Usuario no encontrado",404);
-     
+
         }
-        
+
 
     }
-    
+
     /**
      * @OA\Post(
      *      path="/api/auth/password-recovery/update",
@@ -521,17 +524,17 @@ class AuthController extends Controller
      *      @OA\Response(
      *          response=409,
      *          description="Faltan datos"
-     *       ),     
+     *       ),
      * )
-     * */    
+     * */
 
     public function ActualizarContrasenya()
     {
-        
+
         $token= Input::post('token');
         $password = Input::post('password');
         $errors = array();
-        
+
         if(strlen($token) > 0 && strlen($password) > 0)
         {
             $usuario = \App\User::where('activation_code',$token)->first();
@@ -546,16 +549,16 @@ class AuthController extends Controller
             {
                 return response(json_encode("El token no es válido"),404);
             }
-            
 
-            
+
+
         }
         else {
                 return response(json_encode("Faltan datos"),409);
         }
-        
+
     }
-    
+
     /**
      * @OA\Post(
      *      path="/api/auth/activate/{token}",
@@ -581,12 +584,12 @@ class AuthController extends Controller
      *          description="Ok"
      *       ),
      * )
-     * */    
-    
+     * */
+
     public function Activar($token)
     {
         $errors = array();
-        
+
         if(strlen($token) > 0)
         {
             $usuario = \App\User::where('activation_code',$token)->first();
@@ -602,20 +605,20 @@ class AuthController extends Controller
             {
                 array_push($errors,"El código no es válido");
             }
-            
 
-            
+
+
         }
         else {
             array_push($errors,"Es necesario introducir un código");
-     
+
         }
-        
+
         return json_encode(['message' => "ko", 'errors' => $errors]);
-    }      
-        
-        
-    
+    }
+
+
+
     /**
      * @OA\Get(
      *     path="/api/auth/refresh",
@@ -631,7 +634,7 @@ class AuthController extends Controller
      *         description="Token no válido o expirado"
      *     )
      * )
-     */    
+     */
 
     public function refresh()
     {
@@ -648,7 +651,7 @@ class AuthController extends Controller
     {
         return Auth::guard('api');
     }
-    
+
     /**
      * @OA\Get(
      *     path="/api/auth/isMobile",
@@ -664,9 +667,9 @@ class AuthController extends Controller
      *         description="Usuario no encontrado"
      *     )
      * )
-     */    
-    
-    
+     */
+
+
     private function CalculateIsMobile()
     {
         $agent = new Agent();
@@ -678,26 +681,26 @@ class AuthController extends Controller
         if( $agent->isTablet() )
         {
             $resupuesta  = true;
-        }       
+        }
         if($agent->is('iPhone'))
         {
-           $resupuesta  = true; 
+           $resupuesta  = true;
         }
         if($agent->is('OS X'))
         {
             $resupuesta  = true;
         }
         return $resupuesta;
-        
+
     }
-    
+
     /**
      * @OA\Post(
      *      path="/api/auth/isMobile",
      *      tags={"Autenticación"},
      *      summary="Comprobar si la sesión iniciada está en un dispositivo móvil",
      *      description="Comprobar si la sesión iniciada está en un dispositivo móvil",
-     *   
+     *
      *      @OA\Response(
      *          response=200,
      *          description="Usuario autenticado correctamente"
@@ -708,16 +711,16 @@ class AuthController extends Controller
      *       ),
      * )
      * */
-    
+
     public function isMobile()
     {
         $user = User::find(Auth::id());
         if(!is_null($user))
         {
             $resupuesta = $this->CalculateIsMobile();
-            
 
-            if($this->IsMacOs($user->id) == true) 
+
+            if($this->IsMacOs($user->id) == true)
             {
                 $resuesta = false;
             }
@@ -727,12 +730,12 @@ class AuthController extends Controller
         {
             return response(json_encode("Usuario no encontrado"),404);
         }
-        
-            
-    
-        
+
+
+
+
     }
-    
+
     private function getIp(){
         foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key){
             if (array_key_exists($key, $_SERVER) === true){
@@ -744,15 +747,15 @@ class AuthController extends Controller
                 }
             }
         }
-    }    
-    
+    }
+
     public function AutenticaRTMP(Request $request)
     {
 
         $delegacion = Input::get('delegacion');
-        
+
         $password = Input::get('password');
-        
+
         if(intval($delegacion) == 1 && $password == "RAStv19")
         {
             $user = User::find(1);
@@ -761,7 +764,7 @@ class AuthController extends Controller
         }
         else
         {
-          return response('error',404);  
+          return response('error',404);
         }
     }
 }
