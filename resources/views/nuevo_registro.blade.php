@@ -59,7 +59,9 @@
 <div style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px" align="center">
 
 <div style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#ee3838;border-radius:4px;width:auto;width:auto;border-top:1px solid #ee3897;border-right:1px solid #ee3897;border-bottom:1px solid #ee3897;border-left:1px solid #ee3897;padding-top:5px;padding-bottom:5px;font-family:'Raleway','Trebuchet MS',Helvetica,sans-serif;text-align:center;word-break:keep-all"><span style="padding-left:50px;padding-right:50px;font-size:24px;display:inline-block">
-        <a style="text-decoration:none;color:white;" href="https://api.agustinos.tv/api/auth/activate/<?php echo $datos['activation'];?>"> <span style="font-size:16px;line-height:32px"><span style="font-size:24px;line-height:48px"><strong>ACTIVAR CUENTA</strong></span></span></a>
+
+        <a style="text-decoration:none;color:white;" href="https://api.agustinos.tv/api/auth/activate/<?php echo $token;?>"> <span style="font-size:16px;line-height:32px"><span style="font-size:24px;line-height:48px"><strong>ACTIVAR CUENTA</strong></span></span></a>
+
 </span></div>
 
 </div>

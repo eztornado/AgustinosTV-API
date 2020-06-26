@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Http/Controllers/RTMPController.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Console/Commands/CheckFinalEvento.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Grabaciones.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Console/Commands/AvisarEmail.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Http/Controllers/AuthController.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/CategoriaVideo.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Console/Commands/CheckStatusNodo.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Http/Controllers/Controller.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/routes/api.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Evento.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/EventosLikes.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Nodo.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Console/Commands/CheckExisteEmail.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Console/Commands/CheckInicioEvento.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Canal.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Http/Controllers/UserController.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/User.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Video.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Delegacion.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Console/Commands/EliminarCuentasCorreoFalso.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Services/MailChimpService.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Console/Commands/CerrarSesion.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Http/Controllers/VideoController.php</file>
+            <file>file:/C:/Users/ivanp/Documents/NetBeansProjects/AGUSTINOSTV_API/app/Console/Commands/Activar.php</file>
+        </group>
+    </open-files>
+</project-private>

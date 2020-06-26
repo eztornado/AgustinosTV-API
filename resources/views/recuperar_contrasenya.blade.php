@@ -59,7 +59,9 @@
 <div style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px" align="center">
 
 <div style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#ee3838;border-radius:4px;width:auto;width:auto;border-top:1px solid #ee3897;border-right:1px solid #ee3897;border-bottom:1px solid #ee3897;border-left:1px solid #ee3897;padding-top:5px;padding-bottom:5px;font-family:'Raleway','Trebuchet MS',Helvetica,sans-serif;text-align:center;word-break:keep-all"><span style="padding-left:50px;padding-right:50px;font-size:24px;display:inline-block">
-        <a style="text-decoration:none;color:white;" href="https://agustinos.tv/#/auth/recuperar-contrasenya?token=<?php echo $datos['activation'];?>"> <span style="font-size:16px;line-height:32px"><span style="font-size:24px;line-height:48px"><strong>Recuperar Cuenta</strong></span></span></a>
+
+        <a style="text-decoration:none;color:white;" href="https://agustinos.tv/#/auth/recuperar-contrasenya?token=<?php echo $token;?>"> <span style="font-size:16px;line-height:32px"><span style="font-size:24px;line-height:48px"><strong>Recuperar Cuenta</strong></span></span></a>
+
 </span></div>
 
 </div>
@@ -134,7 +136,11 @@
 
 <div style="color:#f0f0f0;font-family:'Raleway','Trebuchet MS',Helvetica,sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px">
 <div style="font-size:12px;line-height:14px;font-family:'Raleway','Trebuchet MS',Helvetica,sans-serif;color:#f0f0f0">
+<<<<<<< HEAD
 <p style="font-size:14px;line-height:13px;margin:0"><span style="font-size:11px">AGUSTINOS.TV - Copyright 2020 ©</span></p>
+=======
+<p style="font-size:14px;line-height:13px;margin:0"><span style="font-size:11px">AGUSTINOS.TV - Copyright 2019 ©</span></p>
+>>>>>>> 4f697f2eb6dfa73fbd61011881fc0e079f4898a9
 </div>
 </div>
 

@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-       // $schedule->command('planificador:email_aviso')->everyMinute();
+        //$schedule->command('planificador:email_aviso')->everyMinute();
         $schedule->command('check:node_status')->everyTenMinutes();
         $schedule->command('planificador:renderizar_video')->everyMinute();
         $schedule->command('gestion_eventos:check_inicio')->everyMinute();  
@@ -35,8 +35,13 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:clean')->weeklyOn(1, '1:00');
         $schedule->command('backup:run')->weeklyOn(1, '2:00');
         
+<<<<<<< HEAD
       //  $schedule->command('mailchimp:update_audience')->dailyAt('02:00');
       //  $schedule->command('emails:delete_fake')->dailyAt('01:00');
+=======
+        $schedule->command('mailchimp:update_audience')->dailyAt('02:00');
+        $schedule->command('emails:delete_fake')->dailyAt('01:00');
+>>>>>>> 4f697f2eb6dfa73fbd61011881fc0e079f4898a9
         
         
             
