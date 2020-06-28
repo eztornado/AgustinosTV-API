@@ -19,7 +19,7 @@ class CerrarSesion extends Command
      *
      * @var string
      */
-    protected $description = 'Cierra las sesiones de los usuarios que las tienen abiertas tras 24h';
+    protected $description = 'Cierra las sesiones de los usuarios que las tienen abiertas tras 30 dias';
 
     /**
      * Create a new command instance.
@@ -38,8 +38,8 @@ class CerrarSesion extends Command
      */
     public function handle()
     {
-        $sesiones_caducadas = DB::select('SELECT id, TIMESTAMPDIFF(SECOND,created_at, CURRENT_TIMESTAMP())tiempo  FROM sesiones
-            HAVING tiempo > 43200');
+        $sesiones_caducadas = DB::select('SELECT id, TIMESTAMPDIFF(DAY,created_at, CURRENT_TIMESTAMP()) tiempo  FROM sesiones
+            HAVING tiempo > 29');
 
         foreach($sesiones_caducadas as $s)
         {
@@ -47,7 +47,7 @@ class CerrarSesion extends Command
             $sesion->active = 0;
             $sesion->save();
         }
-        
+
         //
     }
 }
