@@ -50,7 +50,5 @@ class LoginCheck extends Command
 
         $ivan = User::find(1);
         $ivan->notify(new SSHLoginNotification($registro->id));
-
-
     }
 }
