@@ -33,18 +33,7 @@ class Kernel extends ConsoleKernel
         
         $schedule->command('sesiones:cerrar')->dailyAt('00:00');
         $schedule->command('backup:clean')->weeklyOn(1, '1:00');
-        $schedule->command('backup:run')->weeklyOn(1, '2:00');
-        
-<<<<<<< HEAD
-      //  $schedule->command('mailchimp:update_audience')->dailyAt('02:00');
-      //  $schedule->command('emails:delete_fake')->dailyAt('01:00');
-=======
-        $schedule->command('mailchimp:update_audience')->dailyAt('02:00');
-        $schedule->command('emails:delete_fake')->dailyAt('01:00');
->>>>>>> 4f697f2eb6dfa73fbd61011881fc0e079f4898a9
-        
-        
-            
+        $schedule->command('backup:run')->weeklyOn(1, '2:00');          
     }
 
     /**
