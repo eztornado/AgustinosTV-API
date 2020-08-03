@@ -127,6 +127,7 @@ Route::group(['middleware' => ['auth:api','cors']], function(){
 
 
 
+    Route::get('log-viewer', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('isAdmin');
 
 });
 
