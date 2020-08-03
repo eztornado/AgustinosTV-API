@@ -11,7 +11,7 @@ use League\Glide\Responses\LaravelResponseFactory;
 class ImagenesVideoController extends Controller
 {
     public function __invoke($video){
-        
+
         $video = \App\Video::find($video);
         if(!is_null($video))
         {
@@ -20,7 +20,7 @@ class ImagenesVideoController extends Controller
             $filesystem = app(Filesystem::class);
             $driver = $filesystem->getDriver();
             $adapter = $driver->getAdapter();
-            $adapter->setPathPrefix('/home/imagenes/videos/'.$video->id.'/');
+            $adapter->setPathPrefix('C:/Users/root/Pictures/videos/'.$video->id.'/');
             $server = ServerFactory::create(
                             [
                             'response' => new LaravelResponseFactory(app('request')),
@@ -30,13 +30,13 @@ class ImagenesVideoController extends Controller
                             'cache_path_prefix' => '/.cache',
                             'base_url' => '/glide/'
                             ]);
-            return $server->getImageResponse($path, request()->all());                  
+            return $server->getImageResponse($path, request()->all());
         }
         else
         {
             return response(json_encode('Vídeo no encontrado'),404);
         }
 
-        
+
     }
 }
