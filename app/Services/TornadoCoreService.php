@@ -47,14 +47,14 @@ class TornadoCoreService {
 
     public function login()
     {
-        $r = $this->httpPost('https://tornadocore.ivanpastorsimarro.com/api/auth/login',
+        /*$r = $this->httpPost('https://tornadocore.ivanpastorsimarro.com/api/auth/login',
             [
                 'email' => env('TORNADOCORE_USER'),
                 'password' => env('TORNADOCORE_PASSWORD'),
             ]);
 
         $login_data = json_decode($r);
-        $this->autorization = $login_data->access_token;
+        $this->autorization = $login_data->access_token;*/
 
     }
 

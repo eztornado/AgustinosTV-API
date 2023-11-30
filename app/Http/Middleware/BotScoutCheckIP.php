@@ -51,7 +51,7 @@ class BotScoutCheckIP
     public function handle($request, Closure $next)
     {
 
-        $ip_usuario = $this->getIp();
+        /*$ip_usuario = $this->getIp();
 
 
         $this->tornadoCoreService->login();
@@ -83,7 +83,7 @@ class BotScoutCheckIP
             //Resultado positivo TornadoCore
             return response(json_encode('IP NO PERMITIDA. BOT DETECTADO'),200);
 
-        }
+        }*/
 
         /*$result = \App\BotScoutResult::where('ip',$ip_usuario)->first();
 
